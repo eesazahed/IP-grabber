@@ -1,23 +1,23 @@
 require("dotenv").config();
 
-const express = require("express");
-const path = require("path");
+const app = require("express")();
 
-const app = express();
-const port = process.env.PORT || 5000;
+app.set("view engine", "ejs");
 
 const { MongoClient } = require("mongodb");
 
-const url =
-  "mongodb+srv://NOT_MY_USERNAME:NOT_MY_PASSWORD@NOT_MY_DB.knkja.mongodb.net/DB?retryWrites=true&w=majority";
-const client = new MongoClient(url);
+const port = process.env.PORT || 5000;
 
-app.engine("html", require("ejs").renderFile);
-app.set("view engine", "html");
-
-app.get("/", async (req, res) => {
+app.use(async (req, res) => {
   let forwarded = req.headers["x-forwarded-for"];
   let ip = forwarded ? forwarded.split(/, /)[0] : req.connection.remoteAddress;
+
+  const url =
+    "mongodb+srv://NOT_MY_USERNAME:NOT_MY_PASSWORD@NOT_MY_DB.knkja.mongodb.net/DB?retryWrites=true&w=majority";
+  const client = new MongoClient(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 
   try {
     await client.connect();
@@ -32,9 +32,7 @@ app.get("/", async (req, res) => {
     await client.close();
   }
 
-  res.render(path.join(__dirname, "/index.html"));
+  res.render("index");
 });
 
-app.listen(port, (req, res) =>
-  console.log(`Running on http://localhost:${port}`)
-);
+app.listen(port);
