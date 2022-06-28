@@ -14,9 +14,9 @@ app.use(async (req, res) => {
   let ip = forwarded ? forwarded.split(/, /)[0] : req.connection.remoteAddress;
   let location;
 	
-	await axios.get(`https://ipapi.co/${ip}/json/`)
-		.then((response) => location = `${response.data.city} ${response.data.region} ${response.data.country_name}`)
-    .catch((error) => true);
+  await axios.get(`https://ipapi.co/${ip}/json/`)
+	  .then((response) => location = `${response.data.city} ${response.data.region} ${response.data.country_name}`)
+	  .catch((error) => true);
   
   const url =
     "mongodb+srv://NOT_MY_USERNAME:NOT_MY_PASSWORD@NOT_MY_DB.knkja.mongodb.net/DB?retryWrites=true&w=majority";
