@@ -15,7 +15,7 @@ app.use(async (req, res) => {
   let location;
 	
   await axios.get(`https://ipapi.co/${ip}/json/`)
-	  .then((response) => location = `${response.data.city} ${response.data.region} ${response.data.country_name}`)
+	  .then((response) => location = `${response.data.city}, ${response.data.region}, ${response.data.country_name}`)
 	  .catch((error) => true);
   
   const url =
