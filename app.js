@@ -11,7 +11,7 @@ const port = process.env.PORT || 5000;
 
 app.use(async (req, res) => {
   let forwarded = req.headers["x-forwarded-for"];
-  let ip = forwarded ? forwarded.split(/, /)[0] : req.connection.remoteAddress;
+  let ip = forwarded ? forwarded.split(/, /)[0] : req.socket.remoteAddress;
   let location;
 	
   await axios.get(`https://ipapi.co/${ip}/json/`)
